@@ -1,5 +1,6 @@
 name: Shared service package
 on:
+  workflow_dispatch:
   push:
     branches: [main, shared-program-service]
   pull_request:
@@ -29,6 +30,8 @@ jobs:
       - name: Build product archive
         shell: powershell
         run: ./tools/package.ps1
+      - name: Verify product archive
+        run: .venv/Scripts/python.exe -m tools.verify_package
       - uses: actions/upload-artifact@v4
         with:
           name: shared-ghidra-service

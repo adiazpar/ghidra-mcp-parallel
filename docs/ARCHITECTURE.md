@@ -7,12 +7,12 @@ never launch Ghidra. Java owns a single writable project and a bounded map of pr
 The supervisor communicates with its child over an authenticated private loopback
 connection. This connection is an implementation detail, not an agent API.
 
-The upstream plugin depends on GUI selection, serial HTTP dispatch, and per-request
-decompilers. Its useful operations are extracted into explicit program queries
-and atomic edit batches; its GUI server is not part of the service package. Upstream
-source and license remain available for provenance. The Maven build depends on
-manually copied system jars; the service build uses javac against the verified local
-Ghidra distribution instead, without modifying a shared extension installation.
+The upstream GUI operations have been adapted into explicit program queries
+and atomic edit batches. The retired GUI source and Maven build are available in
+Git history; the Apache 2.0 license is retained. The service build uses javac
+against the verified local Ghidra distribution without modifying a shared
+extension installation. Java source lives in `engine/`, Python runtime modules in
+`service/`, and synthetic fixtures and benchmarks in `tests/`.
 
 Reads freeze JSON before releasing the reservation. A queued writer stops admission
 of later reads and runs after earlier reads drain. Revision checks occur inside the

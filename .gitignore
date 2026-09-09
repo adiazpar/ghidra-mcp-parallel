@@ -1,62 +1,29 @@
-# Maven target directory
-/target/
-
-# Compiled class files
-*.class
-
-# Logs
-*.log
-
-# IDE files
-# IntelliJ
-.idea/
-*.iml
-*.iws
-out/
-
-# Eclipse
-.project
-.classpath
-.settings/
-bin/
-
-# VS Code
-.vscode/
-
-# macOS
-.DS_Store
-.AppleDouble
-.LSOverride
-
-# Thumbnails
-._*
-
-# macOS metadata files
-.Spotlight-V100
-.Trashes
-
-# Maven Wrapper
-.mvn/
-!/.mvn/wrapper/maven-wrapper.jar
-mvnw
-mvnw.cmd
-
-# Environment files
+# Local toolchains, configuration, projects and evidence
+/.local/
+/.venv/
+/runtime/
 .env
 .env.*
 
-# Java crash logs (if any)
+# Build, package and test output
+/target/
+/dist/
+*.class
+*.pyc
+__pycache__/
+.pytest_cache/
+*.log
 hs_err_pid*
 replay_pid*
 
-# Third party JAR files from Ghidra
-lib/*.jar
-
-# Isolated service dependencies, private configuration, projects, and evidence
-/.local/
-/.venv/
-/dist/
-/runtime/
-__pycache__/
-.pytest_cache/
+# Editor and operating system files
+.idea/
+*.iml
+*.iws
+.project
+.classpath
+.settings/
+.vscode/
+.DS_Store
+Thumbs.db
 

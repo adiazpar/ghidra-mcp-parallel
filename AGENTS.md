@@ -1,32 +1,25 @@
 # Project instructions
 
-This is a standalone GhidraMCP fork for a persistent service supporting parallel
-agent analysis against one shared Ghidra Program. Read IMPLEMENTATION_PROMPT.md
-before implementation, then read DESIGN_REVIEW.md. The user wants the complete product with measured validation,
-not a prototype or a sequence of partial releases.
+This repository contains the shared Ghidra service and its versioned agent plugin.
+Read README.md for the source layout, docs/DEVELOPMENT.md for build and test commands,
+and docs/ARCHITECTURE.md and docs/API.md before changing runtime behavior.
 
 ## Isolation boundary
 
-The user explicitly authorized the consumer migration, versioned plugin
-installation, recycling of legacy projects and commit/push to their fork on
-2026-09-08. The defaults below prohibit unrequested changes; they do not undo
-that authorization. Keep all private consumer data outside this public repository.
+Keep private consumer data outside this public repository. Changes to consumer
+repositories, installed services or global plugin configuration require user
+authorization; ordinary source maintenance stays in this checkout.
 
 - Keep development, configuration, test projects, logs, downloads, and runtime
   state inside this checkout. Use a project-local .venv if Python is needed.
-- Do not modify, migrate, retire, or depend on the setup in the sibling
-  snaphak-re repository. Do not edit its instructions, Python environment,
-  tools/re/run.ps1, MCP configuration, or machine-local paths.
-- Do not open, copy, upgrade, repair, or write the existing ghidra_projects_gui
-  or ghidra_projects_headless projects. Do not call the existing Ghidra MCP
-  endpoint, stop existing Ghidra processes, or delete their locks.
+- Do not change consumer repositories or open their databases during development.
 - Do not alter shared Ghidra installations, extension directories, user settings,
   global environment variables, or global agent/MCP configuration. Use a dedicated
   local Ghidra distribution and configure its user/cache/temp directories locally.
 - Use synthetic test binaries built from source in this repository. No game
   binaries or private analysis databases in the fork or its public artifacts.
 - Bind development services to loopback on an explicitly configured unused port;
-  avoid the existing service on 8080. Never kill an unrelated process to free a port.
+  use port 18765 for development. Never kill an unrelated process to free a port.
 - Cleanup and cancellation must target only resources owned by this service.
   On Windows, track child processes precisely; do not kill by executable name.
 
@@ -56,8 +49,7 @@ that authorization. Keep all private consumer data outside this public repositor
 ## Collaboration and delivery
 
 - Ask concise clarifying questions when product choices need guidance. Continue
-  independent work while waiting. The consolidated surface and complete delivery
-  scope are already decided; do not ask the user to choose partial versions again.
+  independent work while waiting.
 - Do not commit, push implementation changes, contact maintainers, open issues or
   PRs, or publish releases unless the user authorizes those actions.
 - Do not launch external providers or delegate to subagents without user permission.

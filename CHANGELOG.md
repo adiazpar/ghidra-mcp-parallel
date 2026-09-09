@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.0.1 - 2026-09-08
+
+- Remove the retired GUI implementation, Maven build and obsolete planning documents.
+- Group synthetic fixtures and benchmark utilities under tests and update build paths.
+- Simplify the repository guide and separate development instructions from installation.
+- Verify the portable archive in continuous integration.
+
 ## 1.0.0 - 2026-09-08
 
 - Persistent Ghidra owner with shared programs and bounded parallel decompilation.

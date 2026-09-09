@@ -1,7 +1,7 @@
 """Deterministic larger fixture source; compile with the same MSVC flags as small.c."""
 from pathlib import Path
 
-root = Path(__file__).resolve().parents[1]
+root = Path(__file__).resolve().parents[2]
 out = root / '.local/fixtures/large.c'
 lines = ['typedef unsigned int u32;', 'volatile u32 sink;', 'const char message[]="large synthetic fixture";']
 for index in range(256):

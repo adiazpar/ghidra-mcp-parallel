@@ -141,10 +141,10 @@ def test_scripts_analysis_and_export(client):
     c,s,run,identity = client
     for name, expected in [('ContextProbe.java','nested=shared-with-nested'),('jython_probe.py','jython-program=small.exe'),('PromptProbe.java','prompt=property-value')]:
         result = run('script', {'program':SMALL,'expected_version':identity()['version'],'name':name,
-                               'paths':['fixtures/scripts'],'address':'140001064','selection':[['140001064','140001067']]})
+                               'paths':['tests/fixtures/scripts'],'address':'140001064','selection':[['140001064','140001067']]})
         assert expected in result['output']['stdout'], result
     failed = run('script', {'program':SMALL,'expected_version':identity()['version'],'name':'FailAfterEdit.java',
-                            'paths':['fixtures/scripts'],'address':'140001064'},False)
+                            'paths':['tests/fixtures/scripts'],'address':'140001064'},False)
     assert failed['effect'] == 'partially_applied'
     assert 'before-failure' in failed['output']['stderr']
     run('analyze', {'program':SMALL,'expected_version':identity()['version'],'all':False})
@@ -157,7 +157,7 @@ def test_queued_and_running_cancellation(client):
     c,s,run,identity = client
     def submit(op,args,timeout=120):
         return c.call('job_submit',session=s,operation=op,arguments=args,timeout_seconds=timeout)['id']
-    first = submit('script',{'program':SMALL,'expected_version':identity()['version'],'name':'Cooperative.java','args':['5000'],'paths':['fixtures/scripts']})
+    first = submit('script',{'program':SMALL,'expected_version':identity()['version'],'name':'Cooperative.java','args':['5000'],'paths':['tests/fixtures/scripts']})
     deadline=time.monotonic()+10
     while c.call('job_status',session=s,job=first)['status'] != 'running':
         assert time.monotonic()<deadline
@@ -168,7 +168,7 @@ def test_queued_and_running_cancellation(client):
     c.call('job_cancel',session=s,job=first)
     assert c.wait(s,first)['status']=='cancelled'
     assert run('decompile',{'program':LARGE,'function':'work_101','cache':False})['status']=='completed'
-    timeout = submit('script',{'program':SMALL,'expected_version':identity()['version'],'name':'Cooperative.java','args':['5000'],'paths':['fixtures/scripts']},.1)
+    timeout = submit('script',{'program':SMALL,'expected_version':identity()['version'],'name':'Cooperative.java','args':['5000'],'paths':['tests/fixtures/scripts']},.1)
     assert c.wait(s,timeout)['status']=='timed_out'
 
 
@@ -230,9 +230,9 @@ def test_writer_progress_and_read_barrier(client):
 def test_queue_bound_and_timeout(client):
     c,s,run,identity=client
     # Warm script compilation before measuring the reservation.
-    run('script',{'program':SMALL,'expected_version':identity()['version'],'name':'Cooperative.java','args':['1'],'paths':['fixtures/scripts']})
+    run('script',{'program':SMALL,'expected_version':identity()['version'],'name':'Cooperative.java','args':['1'],'paths':['tests/fixtures/scripts']})
     blocker=c.call('job_submit',session=s,operation='script',arguments={'program':SMALL,'expected_version':identity()['version'],
-        'name':'Cooperative.java','args':['15000'],'paths':['fixtures/scripts']})['id']
+        'name':'Cooperative.java','args':['15000'],'paths':['tests/fixtures/scripts']})['id']
     sessions=[c.call('session_open')['session'] for _ in range(6)]
     accepted=[]
     try:
@@ -276,7 +276,7 @@ def test_import_lifecycle_and_function_creation(client):
     try:
         imported=run('program_import',{'file':'.local/fixtures/small.exe','name':name,'analyze':False,
             'loader':'PeLoader','language':'x86:LE:64:default','compiler':'windows','loader_options':{'-loader-loadLibraries':'false'},
-            'paths':['fixtures/scripts'],'pre_scripts':[{'name':'Continuation.java','args':['CONTINUE','imports']}],
+            'paths':['tests/fixtures/scripts'],'pre_scripts':[{'name':'Continuation.java','args':['CONTINUE','imports']}],
             'post_scripts':[{'name':'LifecyclePost.java'}]})
         p=imported['output']['id']
         assert p=='/imports/'+name
@@ -287,9 +287,9 @@ def test_import_lifecycle_and_function_creation(client):
             {'op':'create_function','address':'140001064','name':'created_mix'}]})
         assert 'created_mix' in run('decompile',{'program':p,'function':'140001064'})['output']['code']
         deleted=run('script',{'program':p,'expected_version':r['program']['version'],'allow_delete':True,
-            'name':'Continuation.java','args':['ABORT_AND_DELETE'],'paths':['fixtures/scripts']})
+            'name':'Continuation.java','args':['ABORT_AND_DELETE'],'paths':['tests/fixtures/scripts']})
         assert deleted['effect']=='deleted'
-        discarded=run('program_import',{'file':'.local/fixtures/small.exe','name':name,'paths':['fixtures/scripts'],
+        discarded=run('program_import',{'file':'.local/fixtures/small.exe','name':name,'paths':['tests/fixtures/scripts'],
             'pre_scripts':[{'name':'Continuation.java','args':['ABORT_AND_DELETE']}]})
         assert discarded['output']['discarded']
         assert not any(name in x for x in run('programs')['output']['files'])
@@ -301,10 +301,10 @@ def test_import_lifecycle_and_function_creation(client):
 
 def test_jython_failure_and_cancel(client):
     c,s,run,identity=client
-    failed=run('script',{'program':SMALL,'expected_version':identity()['version'],'paths':['fixtures/scripts'],'name':'jython_failure.py'},False)
+    failed=run('script',{'program':SMALL,'expected_version':identity()['version'],'paths':['tests/fixtures/scripts'],'name':'jython_failure.py'},False)
     assert failed['status']=='failed' and 'python fixture failure' in failed['error']
     assert 'before-python-failure' in failed['output']['stdout']
-    timeout=run('script',{'program':SMALL,'expected_version':identity()['version'],'paths':['fixtures/scripts'],'name':'jython_cancel.py'},False,3)
+    timeout=run('script',{'program':SMALL,'expected_version':identity()['version'],'paths':['tests/fixtures/scripts'],'name':'jython_cancel.py'},False,3)
     assert timeout['status']=='timed_out',timeout
 
 
@@ -345,7 +345,7 @@ def test_analysis_options_and_path_containment(client):
 
 def test_analysis_stage_timeout_lifecycle(client):
     c,s,run,identity=client
-    result=run('script',{'program':SMALL,'expected_version':identity()['version'],'paths':['fixtures/scripts'],
+    result=run('script',{'program':SMALL,'expected_version':identity()['version'],'paths':['tests/fixtures/scripts'],
         'pre_scripts':[{'name':'SlowAnalyzer.java'}],'post_scripts':[{'name':'LifecyclePost.java'}],
         'analyze':True,'all':False,'analysis_timeout':1})
     assert result['output']['analysis_timed_out']
@@ -376,7 +376,7 @@ def test_engine_recovery_no_replay(client,script):
     run('edit',{'program':SMALL,'expected_version':identity()['version'],'save':False,'changes':[
         {'op':'comment','address':'140001064','type':'PRE','text':'must disappear on crash'}]})
     job=c.call('job_submit',session=s,operation='script',arguments={
-        'program':SMALL,'expected_version':identity()['version'],'name':script,'paths':['fixtures/scripts']},timeout_seconds=5)['id']
+        'program':SMALL,'expected_version':identity()['version'],'name':script,'paths':['tests/fixtures/scripts']},timeout_seconds=5)['id']
     result=c.wait(s,job,45)
     assert result['status'] in ('failed','timed_out'), result
     assert result['effect']=='outcome_unknown', result

@@ -7,9 +7,9 @@ if (!(Test-Path $cl)) { throw 'MSVC 14.44.35207 x64 compiler required' }
 New-Item -ItemType Directory -Force "$root/.local/fixtures" | Out-Null
 Push-Location "$root/.local/fixtures"
 try {
-    & $cl /nologo /O1 /GS- /Zl /Fo:small.obj "$root/fixtures/small.c" /link /nodefaultlib /entry:entry /subsystem:console /out:small.exe
+    & $cl /nologo /O1 /GS- /Zl /Fo:small.obj "$root/tests/fixtures/small.c" /link /nodefaultlib /entry:entry /subsystem:console /out:small.exe
     if($LASTEXITCODE) { throw 'Fixture compilation failed' }
-    & "$root/.venv/Scripts/python.exe" "$root/fixtures/generate.py"
+    & "$root/.venv/Scripts/python.exe" "$root/tests/fixtures/generate.py"
     & $cl /nologo /O1 /GS- /Zl /Fo:large.obj large.c /link /nodefaultlib /entry:entry /subsystem:console /out:large.exe
     if($LASTEXITCODE) { throw 'Large fixture compilation failed' }
 } finally { Pop-Location }

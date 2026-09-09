@@ -18,7 +18,7 @@ def invocation(version,name,arguments):
     for prop,folder in [('user.home','home'),('application.settingsdir','settings'),('application.cachedir','cache'),('application.tempdir','temp'),('java.io.tmpdir','temp')]:
         (directory/folder).mkdir(exist_ok=True);cmd.append(f'-D{prop}={directory/folder}')
     cmd+=['-cp',str(ghidra/'Ghidra/Framework/Utility/lib/Utility.jar'),'ghidra.Ghidra','ghidra.app.util.headless.AnalyzeHeadless',
-          str(project),name,'-scriptPath',str(ROOT/'fixtures/scripts'),'-max-cpu','4',
+          str(project),name,'-scriptPath',str(ROOT/'tests/fixtures/scripts'),'-max-cpu','4',
           '-log',str(directory/'ghidra.log'),'-scriptlog',str(directory/'scripts.log'),*arguments]
     output=directory/f'{time.time_ns()}.log'
     with output.open('wb') as log:
@@ -37,7 +37,7 @@ def main():
     c=Client();sid=c.call('session_open')['session']
     try:
         programs=c.run(sid,'programs',{})['output']['loaded'];p=next(x for x in programs if x['id']=='/small.exe')
-        service=c.run(sid,'script',{'program':p['id'],'expected_version':p['version'],'paths':['fixtures/scripts'],
+        service=c.run(sid,'script',{'program':p['id'],'expected_version':p['version'],'paths':['tests/fixtures/scripts'],
                                   'name':'BaselineContext.java'})
         assert service['status']=='completed',service
         output=service['output']['stdout']+service['output']['stderr']

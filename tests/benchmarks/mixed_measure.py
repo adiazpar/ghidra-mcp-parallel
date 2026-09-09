@@ -3,7 +3,7 @@ import json
 import time
 from service.client import Client
 from service.config import LOCAL
-from tools.measure import sessions_measure,summary
+from tests.benchmarks.measure import sessions_measure,summary
 
 
 def main():

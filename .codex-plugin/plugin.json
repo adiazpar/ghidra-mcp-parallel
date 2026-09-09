@@ -1,6 +1,6 @@
 {
   "name": "ghidra-mcp-parallel",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Persistent shared Ghidra programs, parallel reads and coordinated edits.",
   "author": {
     "name": "Alex Diaz"

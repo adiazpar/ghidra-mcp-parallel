@@ -128,7 +128,7 @@ def baseline(version):
         (directory/folder).mkdir(exist_ok=True);options.append(f'-D{prop}={directory/folder}')
     options+=['-cp',str(ghidra/'Ghidra/Framework/Utility/lib/Utility.jar'),'ghidra.Ghidra','ghidra.app.util.headless.AnalyzeHeadless',
               str(project),f'baseline_{version.replace(".","_")}_{int(time.time())}',
-              '-import',str(LOCAL/'fixtures/large.exe'),'-scriptPath',str(ROOT/'fixtures/scripts'),
+              '-import',str(LOCAL/'fixtures/large.exe'),'-scriptPath',str(ROOT/'tests/fixtures/scripts'),
               '-postScript','Baseline.java',*names,'-max-cpu','4','-log',str(directory/'application.log'),
               '-scriptlog',str(directory/'script.log')]
     with open(directory/'console.log','wb') as log:

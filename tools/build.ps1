@@ -1,4 +1,4 @@
-param([switch]$Upstream,[switch]$FixtureScripts)
+param([switch]$FixtureScripts)
 $ErrorActionPreference = 'Stop'
 $root = Split-Path $PSScriptRoot -Parent
 $ghidra = Join-Path $root '.local/ghidra_12.1.3_PUBLIC'
@@ -7,12 +7,10 @@ $javac = (Get-Command javac).Source
 if ((& $javac -version 2>&1) -notmatch '21\.0\.11') { throw 'Pinned JDK 21.0.11 required' }
 $jars = Get-ChildItem "$ghidra/Ghidra" -Recurse -Filter *.jar | ForEach-Object FullName
 $classes = Join-Path $root 'target/service-classes'
-if($Upstream) { $classes = Join-Path $root 'target/upstream-classes' }
 if($FixtureScripts) { $classes = Join-Path $root '.local/fixture-classes' }
 New-Item -ItemType Directory -Force $classes | Out-Null
 $sources = @(Get-ChildItem "$root/engine/src/main/java" -Recurse -Filter *.java | ForEach-Object FullName)
-if($Upstream) { $sources = @(Get-ChildItem "$root/src/main/java" -Recurse -Filter *.java | ForEach-Object FullName) }
-if($FixtureScripts) { $sources = @(Get-ChildItem "$root/fixtures/scripts" -Filter *.java | ForEach-Object FullName) }
+if($FixtureScripts) { $sources = @(Get-ChildItem "$root/tests/fixtures/scripts" -Filter *.java | ForEach-Object FullName) }
 $arguments = @('-proc:none','-encoding','UTF-8','-cp',('"'+($jars -join ';')+'"'),'-d',('"'+$classes+'"')) + ($sources | ForEach-Object {'"'+$_+'"'})
 $argfile = Join-Path $root 'target/javac.args'
 ($arguments -replace '\\','/') | Set-Content -Encoding utf8 $argfile
