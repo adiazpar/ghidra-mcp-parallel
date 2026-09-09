@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "ghidra": {
+      "command": "powershell.exe",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-Command",
+        "$r = if ($env:GHIDRA_SHARED_HOME) { $env:GHIDRA_SHARED_HOME } else { Join-Path ([Environment]::GetFolderPath('UserProfile')) 'ghidra-shared' }; $p = Join-Path $r '.venv/Scripts/python.exe'; if (!(Test-Path -LiteralPath $p)) { throw 'Shared Ghidra is not installed. Run the plugin setup workflow.' }; & $p (Join-Path $r 'bridge_mcp_ghidra.py'); exit $LASTEXITCODE"
+      ]
+    }
+  }
+}

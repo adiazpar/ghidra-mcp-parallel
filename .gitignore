@@ -52,3 +52,11 @@ replay_pid*
 # Third party JAR files from Ghidra
 lib/*.jar
 
+# Isolated service dependencies, private configuration, projects, and evidence
+/.local/
+/.venv/
+/dist/
+/runtime/
+__pycache__/
+.pytest_cache/
+

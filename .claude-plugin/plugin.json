@@ -1,0 +1,11 @@
+{
+  "name": "ghidra-mcp-parallel",
+  "version": "1.0.0",
+  "description": "Persistent shared Ghidra programs, parallel reads and coordinated edits.",
+  "author": {
+    "name": "Alex Diaz"
+  },
+  "repository": "https://github.com/adiazpar/ghidra-mcp-parallel",
+  "license": "Apache-2.0",
+  "mcpServers": "./.mcp.json"
+}

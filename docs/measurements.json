@@ -1,0 +1,130 @@
+{
+  "machine": {
+    "system": "Windows-11-10.0.26200-SP0",
+    "cpu": "AMD64 Family 26 Model 68 Stepping 0, AuthenticAMD",
+    "logical_cpus": 16,
+    "ram_bytes": 33408585728
+  },
+  "python": "3.12.9",
+  "workers": [
+    {
+      "workers": 1,
+      "throughput": 18.63056305004179,
+      "latency_median_ms": 359.5381999621168,
+      "queue_median_ms": 314.7021000040695,
+      "rss_mib": 406.99609375,
+      "first_ms": 453.1720000086352
+    },
+    {
+      "workers": 2,
+      "throughput": 30.69714102579546,
+      "latency_median_ms": 181.1814500251785,
+      "queue_median_ms": 121.73520005308092,
+      "rss_mib": 459.15234375,
+      "first_ms": 455.8965000323951
+    },
+    {
+      "workers": 4,
+      "throughput": 46.887191888907324,
+      "latency_median_ms": 73.51585000287741,
+      "queue_median_ms": 9.13774996297434,
+      "rss_mib": 498.69921875,
+      "first_ms": 473.7571000587195
+    }
+  ],
+  "headless": [
+    {
+      "version": "12.1.3",
+      "wall_seconds": 19.54263310006354,
+      "peak_owned_rss_sum": 1454313472,
+      "compute_ms": {
+        "work_020": 59.4584,
+        "work_021": 42.6588,
+        "work_022": 44.4724,
+        "work_023": 41.149,
+        "work_024": 36.0732,
+        "work_025": 39.5492,
+        "work_026": 40.2903,
+        "work_027": 40.7988
+      },
+      "matching_service": {
+        "work_020": true,
+        "work_021": true,
+        "work_022": true,
+        "work_023": true,
+        "work_024": true,
+        "work_025": true,
+        "work_026": true,
+        "work_027": true
+      },
+      "fixture_sha256": "ffb81e43165eb9bc5dac559b4355a439e86754275400ba9bbaee66e89fc57f95"
+    },
+    {
+      "version": "11.3.2",
+      "wall_seconds": 27.387204300030135,
+      "peak_owned_rss_sum": 1277005824,
+      "compute_ms": {
+        "work_020": 134.0927,
+        "work_021": 117.4695,
+        "work_022": 126.9514,
+        "work_023": 110.9532,
+        "work_024": 113.0477,
+        "work_025": 116.2022,
+        "work_026": 112.4446,
+        "work_027": 117.4358
+      },
+      "matching_service": {
+        "work_020": true,
+        "work_021": true,
+        "work_022": true,
+        "work_023": true,
+        "work_024": true,
+        "work_025": true,
+        "work_026": true,
+        "work_027": true
+      },
+      "fixture_sha256": "ffb81e43165eb9bc5dac559b4355a439e86754275400ba9bbaee66e89fc57f95"
+    }
+  ],
+  "mixed": {
+    "requests": 48,
+    "wall_seconds": 7.995627099997364,
+    "requests_per_second": 6.0032814686937845,
+    "latency_median_ms": 285.255600058008,
+    "latency_p95_ms": 518.7602000078186,
+    "queue_median_ms": 118.61815000884235,
+    "compute_median_ms": 139.86045000000001
+  },
+  "sessions": [
+    {
+      "count": 0,
+      "project_bytes": 24332180,
+      "supervisor_rss": 67493888,
+      "owner_jvm_count": 1
+    },
+    {
+      "count": 8,
+      "project_bytes": 24332180,
+      "supervisor_rss": 67235840,
+      "owner_jvm_count": 1
+    },
+    {
+      "count": 32,
+      "project_bytes": 24332180,
+      "supervisor_rss": 67624960,
+      "owner_jvm_count": 1
+    },
+    {
+      "count": 64,
+      "project_bytes": 24332180,
+      "supervisor_rss": 67694592,
+      "owner_jvm_count": 1
+    },
+    {
+      "count": 100,
+      "project_bytes": 24332180,
+      "supervisor_rss": 67915776,
+      "owner_jvm_count": 1
+    }
+  ]
+}

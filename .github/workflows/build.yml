@@ -1,61 +1,35 @@
-name: Build with Maven
-
+name: Shared service package
 on:
   push:
-    branches: [ "main" ]
+    branches: [main, shared-program-service]
   pull_request:
-    branches: [ "main" ]
-
+    branches: [main]
+permissions:
+  contents: read
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    env:
-      GHIDRA_VERSION: 11.3.2
-      GHIDRA_DATE: 20250415
-      GHIDRA_LIBS: >-
-        Features/Base/lib/Base.jar
-        Features/Decompiler/lib/Decompiler.jar
-        Framework/Docking/lib/Docking.jar
-        Framework/Generic/lib/Generic.jar
-        Framework/Project/lib/Project.jar
-        Framework/SoftwareModeling/lib/SoftwareModeling.jar
-        Framework/Utility/lib/Utility.jar
-        Framework/Gui/lib/Gui.jar
-
+  package:
+    runs-on: windows-latest
+    timeout-minutes: 20
     steps:
-    - uses: actions/checkout@v4
-    - name: Set up JDK 21
-      uses: actions/setup-java@v4
-      with:
-        java-version: '21'
-        distribution: 'temurin'
-        cache: maven
-
-    - name: Download Ghidra
-      run: |
-        wget --no-verbose -O ghidra.zip https://github.com/NationalSecurityAgency/ghidra/releases/download/Ghidra_${{ env.GHIDRA_VERSION }}_build/ghidra_${{ env.GHIDRA_VERSION }}_PUBLIC_${{ env.GHIDRA_DATE }}.zip
-        7z x -bd ghidra.zip
-
-    - name: Copy Ghidra libs
-      run: |
-        mkdir -p ./lib
-        for libfile in ${{ env.GHIDRA_LIBS }}
-          do echo "Copying ${libfile} to lib/"
-          cp ghidra_${{ env.GHIDRA_VERSION }}_PUBLIC/Ghidra/${libfile} ./lib/
-        done
-
-    - name: Build with Maven
-      run: mvn clean package assembly:single
-
-    - name: Assemble release directory
-      run: |
-        mkdir release
-        cp target/GhidraMCP-*-SNAPSHOT.zip release/
-        cp bridge_mcp_ghidra.py release/
-
-    - name: Upload artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: GhidraMCP-artifact
-        path: |
-          release/*
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12.9'
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21.0.11'
+      - name: Install bootstrap
+        run: python -m pip install uv==0.6.11
+      - name: Install isolated development toolchain
+        shell: powershell
+        run: ./tools/install.ps1
+      - name: Check distribution and supervisor contracts
+        run: .venv/Scripts/python.exe -m pytest tests/test_plugin.py tests/test_supervisor.py -q
+      - name: Build product archive
+        shell: powershell
+        run: ./tools/package.ps1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: shared-ghidra-service
+          path: dist/*

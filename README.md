@@ -1,119 +1,130 @@
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
-[![GitHub release (latest by date)](https://img.shields.io/github/v/release/LaurieWired/GhidraMCP)](https://github.com/LaurieWired/GhidraMCP/releases)
-[![GitHub stars](https://img.shields.io/github/stars/LaurieWired/GhidraMCP)](https://github.com/LaurieWired/GhidraMCP/stargazers)
-[![GitHub forks](https://img.shields.io/github/forks/LaurieWired/GhidraMCP)](https://github.com/LaurieWired/GhidraMCP/network/members)
-[![GitHub contributors](https://img.shields.io/github/contributors/LaurieWired/GhidraMCP)](https://github.com/LaurieWired/GhidraMCP/graphs/contributors)
-[![Follow @lauriewired](https://img.shields.io/twitter/follow/lauriewired?style=social)](https://twitter.com/lauriewired)
+# Shared Ghidra service
 
-![ghidra_MCP_logo](https://github.com/user-attachments/assets/4986d702-be3f-4697-acce-aea55cd79ad3)
+Version **1.0.0**. This repository is the service product and its plugin for
+both agent clients. Install the plugin from `adiazpar/ghidra-mcp-parallel`;
+run `scripts/deploy.ps1` once to install the private service at `~/ghidra-shared`.
+Then use `scripts/service.ps1 start|status|stop`. Consumer repositories contain
+their target maps, scripts and findings, not the Ghidra installation.
 
+Start with [installation and responsibility map](docs/INSTALLATION.md),
+[the workflow skill](skills/workflow/SKILL.md), and [version history](CHANGELOG.md).
 
-# ghidraMCP
-ghidraMCP is an Model Context Protocol server for allowing LLMs to autonomously reverse engineer applications. It exposes numerous tools from core Ghidra functionality to MCP clients.
+A persistent headless Ghidra owner with one authenticated MCP endpoint. Independent
+agent sessions share loaded programs, revisions and a bounded pool of native
+decompilers. Reads overlap; edits, scripts, analysis and lifecycle operations are
+coordinated. Sessions do not create private program versions or project copies.
 
-https://github.com/user-attachments/assets/36080514-f227-44bd-af84-78e29ee1d7f9
+This fork preserves the upstream Apache 2.0 license. Historical GUI-plugin source
+remains in `src/`; it is not installed or started by this product. The service core
+is in `engine/` and the MCP supervisor is in `service/`.
 
+## Development installation on Windows
 
-# Features
-MCP Server + Ghidra Plugin
+Prerequisites: JDK 21.0.11 on PATH, Python/uv for bootstrap, and approximately 2 GiB
+for the local distribution and environment. Validation fixture builds additionally
+require MSVC 14.44.35207 x64 Build Tools. All runtime dependencies are pinned in
+`toolchain.json` and `requirements.lock`.
 
-- Decompile and analyze binaries in Ghidra
-- Automatically rename methods and data
-- List methods, classes, imports, and exports
+```powershell
+powershell -NoProfile -File tools/install.ps1 -Port 18765 -Workers 4
+powershell -NoProfile -File tools/service.ps1 start
+powershell -NoProfile -File tools/service.ps1 status
+powershell -NoProfile -File tools/service.ps1 stop
+```
 
-# Installation
+Installation downloads and verifies Ghidra 12.1.3 and installs its bundled Jython
+extension only inside `.local/`. Configuration and a random authentication token
+are written to `.local/config.json`, with Windows permissions restricted to the
+current user. No global MCP configuration is edited. The selected port must be
+unused; no unrelated process is stopped to free it. Stop this service before
+rebuilding/installing its engine.
 
-## Prerequisites
-- Install [Ghidra](https://ghidra-sre.org)
-- Python3
-- MCP [SDK](https://github.com/modelcontextprotocol/python-sdk)
+`start` launches one supervisor, which starts one engine JVM. Multiple clients
+connect to that owner; they never start a JVM themselves. `status` reports startup,
+engine generation, bounded queues, sessions, loaded targets and owned process memory.
+Engine crashes recover behind the same endpoint. Restarted jobs are not replayed.
+Default successful edits/scripts save to disk; explicit `save:false` changes remain
+volatile. Save desired volatile changes before stopping or restarting the engine.
 
-## Ghidra
-First, download the latest [release](https://github.com/LaurieWired/GhidraMCP/releases) from this repository. This contains the Ghidra plugin and Python MCP client. Then, you can directly import the plugin into Ghidra.
+## Connect clients
 
-1. Run Ghidra
-2. Select `File` -> `Install Extensions`
-3. Click the `+` button
-4. Select the `GhidraMCP-1-2.zip` (or your chosen version) from the downloaded release
-5. Restart Ghidra
-6. Make sure the GhidraMCPPlugin is enabled in `File` -> `Configure` -> `Developer`
-7. *Optional*: Configure the port in Ghidra with `Edit` -> `Tool Options` -> `GhidraMCP HTTP Server`
+Use the URL `http://127.0.0.1:18765/mcp` and an `Authorization: Bearer <token>` header,
+where the token comes from `.local/config.json`. Use the same endpoint for every
+agent. Client-specific configuration belongs to you; installation does not change
+any existing client, Ghidra installation or project.
 
-Video Installation Guide:
-
-
-https://github.com/user-attachments/assets/75f0c176-6da1-48dc-ad96-c182eb4648c3
-
-
-
-## MCP Clients
-
-Theoretically, any MCP client should work with ghidraMCP.  Three examples are given below.
-
-## Example 1: Claude Desktop
-To set up Claude Desktop as a Ghidra MCP client, go to `Claude` -> `Settings` -> `Developer` -> `Edit Config` -> `claude_desktop_config.json` and add the following:
+For clients that require stdio, configure the project-local Python interpreter and
+forwarding adapter. Replace the example path with this checkout's actual path:
 
 ```json
 {
   "mcpServers": {
-    "ghidra": {
-      "command": "python",
-      "args": [
-        "/ABSOLUTE_PATH_TO/bridge_mcp_ghidra.py",
-        "--ghidra-server",
-        "http://127.0.0.1:8080/"
-      ]
+    "shared-ghidra": {
+      "command": "C:/path/to/checkout/.venv/Scripts/python.exe",
+      "args": ["C:/path/to/checkout/bridge_mcp_ghidra.py"]
     }
   }
 }
 ```
 
-Alternatively, edit this file directly:
-```
-/Users/YOUR_USER/Library/Application Support/Claude/claude_desktop_config.json
-```
+The adapter reads the local configuration and forwards MCP requests to the running
+service. It has no alternate analysis backend. The old `--ghidra-server` URL and
+unauthenticated port 8080 bridge have been removed.
 
-The server IP and port are configurable and should be set to point to the target Ghidra instance. If not set, both will default to localhost:8080.
+## First target and two clients
 
-## Example 2: Cline
-To use GhidraMCP with [Cline](https://cline.bot), this requires manually running the MCP server as well. First run the following command:
-
-```
-python bridge_mcp_ghidra.py --transport sse --mcp-host 127.0.0.1 --mcp-port 8081 --ghidra-server http://127.0.0.1:8080/
+```powershell
+powershell -NoProfile -File tools/fixtures.ps1
+.venv/Scripts/python.exe -m tools.prepare_validation
+.venv/Scripts/python.exe -m examples.two_clients
 ```
 
-The only *required* argument is the transport. If all other arguments are unspecified, they will default to the above. Once the MCP server is running, open up Cline and select `MCP Servers` at the top.
+For your own repository-local target, call `session_open`, submit `project_open`,
+then `program_import`. Poll `job_result` with the returned job ID. The import result
+contains the explicit program ID used for all subsequent requests. Use
+`program_open` for an existing file in the service-owned project. Only one writable
+project is open at a time; close loaded targets before switching projects.
 
-![Cline select](https://github.com/user-attachments/assets/88e1f336-4729-46ee-9b81-53271e9c0ce0)
+```python
+from service.client import Client
+c = Client()
+s = c.call('session_open', label='analysis')['session']
+r = c.run(s, 'decompile', {
+    'program': '/small.exe', 'function': 'mix', 'cache': False
+})
+assert r['status'] == 'completed', r
+print(r['output']['code'])
+c.call('session_close', session=s)
+```
 
-Then select `Remote Servers` and add the following, ensuring that the url matches the MCP host and port:
+[API contract](docs/API.md) covers every query, edit, script, lifecycle operation,
+argument, conflict check, retention limit and cancellation outcome.
+[Architecture](docs/ARCHITECTURE.md) explains ownership and Ghidra synchronization.
+[Capability matrix](docs/CAPABILITIES.md) records tested headless behavior and limits.
 
-1. Server Name: GhidraMCP
-2. Server URL: `http://127.0.0.1:8081/sse`
+## Validate and package
 
-## Example 3: 5ire
-Another MCP client that supports multiple models on the backend is [5ire](https://github.com/nanbingxyz/5ire). To set up GhidraMCP, open 5ire and go to `Tools` -> `New` and set the following configurations:
+Start the isolated service first. Validation refuses to replace a project other
+than the disposable `validation` / `validation_*` projects. Rebuilt fixture hashes
+are checked; if they changed, validation saves and closes the old disposable project
+and imports into a fresh one. It never reuses a stale analyzed binary for comparison.
 
-1. Tool Key: ghidra
-2. Name: GhidraMCP
-3. Command: `python /ABSOLUTE_PATH_TO/bridge_mcp_ghidra.py`
+```powershell
+powershell -NoProfile -File tools/validate.ps1
+powershell -NoProfile -File tools/validate.ps1 -Benchmarks
+powershell -NoProfile -File tools/package.ps1
+```
 
-# Building from Source
-1. Copy the following files from your Ghidra directory to this project's `lib/` directory:
-- `Ghidra/Features/Base/lib/Base.jar`
-- `Ghidra/Features/Decompiler/lib/Decompiler.jar`
-- `Ghidra/Framework/Docking/lib/Docking.jar`
-- `Ghidra/Framework/Generic/lib/Generic.jar`
-- `Ghidra/Framework/Project/lib/Project.jar`
-- `Ghidra/Framework/SoftwareModeling/lib/SoftwareModeling.jar`
-- `Ghidra/Framework/Utility/lib/Utility.jar`
-- `Ghidra/Framework/Gui/lib/Gui.jar`
-2. Build with Maven by running:
+The full benchmark also needs the separate Ghidra 11.3.2 comparison archive. Run
+`tools/install.ps1 -Comparison` while the service is stopped to download, verify and
+extract it under `.local/ghidra_11.3.2_PUBLIC`. It never opens
+projects from your existing setup. Benchmarking restarts only this packaged service
+while measuring worker counts 1, 2 and 4 and restores its configuration afterwards.
 
-`mvn clean package assembly:single`
+The ZIP and checksum are written to `dist/`. It includes source, the built engine,
+fixtures, tests and documentation. It excludes tokens, databases, runtime state,
+downloads, logs and local evidence. No release is published automatically.
 
-The generated zip file includes the built Ghidra plugin and its resources. These files are required for Ghidra to recognize the new extension.
-
-- lib/GhidraMCP.jar
-- extensions.properties
-- Module.manifest
+See [measured validation](docs/VALIDATION.md) for results and their limits, and
+[upstream contribution plan](docs/UPSTREAM_PLAN.md) for a proposed review sequence.
+Changes remain uncommitted unless explicitly requested.

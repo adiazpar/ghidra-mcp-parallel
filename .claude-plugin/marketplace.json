@@ -1,0 +1,14 @@
+{
+  "name": "ghidra-mcp-parallel",
+  "description": "One persistent Ghidra service and shared agent workflow.",
+  "owner": {
+    "name": "Alex Diaz"
+  },
+  "plugins": [
+    {
+      "name": "ghidra-mcp-parallel",
+      "source": "./",
+      "description": "Persistent shared Ghidra service and agent workflow."
+    }
+  ]
+}

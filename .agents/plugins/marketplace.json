@@ -1,0 +1,20 @@
+{
+  "name": "ghidra-mcp-parallel",
+  "interface": {
+    "displayName": "Shared Ghidra"
+  },
+  "plugins": [
+    {
+      "name": "ghidra-mcp-parallel",
+      "source": {
+        "source": "local",
+        "path": "."
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}
