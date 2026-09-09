@@ -1,0 +1,309 @@
+{
+  "LICENSE": [
+    "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+  ],
+  "README.md": [
+    "3e457c5595b40daa33480b329781d81f6e81aa31803151a369e2d84da279fa8c",
+    "96d65ccc2e104d63c40c988d00b8dabf561376ecf325c784c6ca15bee8b34370"
+  ],
+  "VERSION": [
+    "44e161e4495cac2cf7858043e9e6418e9579f0ddcfae826f9a372622968ce066",
+    "59854984853104df5c353e2f681a15fc7924742f9a2e468c29af248dce45ce03"
+  ],
+  "bridge_mcp_ghidra.py": [
+    "dd335fe21cd356517a489e8546eeb175c6a754912744f43a77c09366152fcec7"
+  ],
+  "docs/API.md": [
+    "06d45bf37195666d24f6c8f92940fbcb6f07edf20963c2cee8f61537cfd0bc13"
+  ],
+  "docs/ARCHITECTURE.md": [
+    "3046c4a9bd6a9fd88d2f68fcb36a1465ff66edec641b61e6a7079af6f6226e69",
+    "99750feb3c39cb54f04af7ab6d7a0b57ce16051af6562fc87448ff674e759130"
+  ],
+  "docs/CAPABILITIES.md": [
+    "5c13ce5a22d084ccdd2b8e38e8a34d8da20e332a3bc488e0be6aed9c4380178c"
+  ],
+  "docs/DEVELOPMENT.md": [
+    "3a7c1d56bc58961d0fb3ad71a29bede774594dab88335389335a8f28b2a8d0c7"
+  ],
+  "docs/INSTALLATION.md": [
+    "bc140e883e3fc05664b89efc58daec0313daa5ce89139c6e1be643a825a346a6"
+  ],
+  "docs/UPSTREAM_PLAN.md": [
+    "2715f16016400f915634ca1e742fbea7962ae9a54717e6c70b92a57e8ee9b73d"
+  ],
+  "docs/UPSTREAM_README.md": [
+    "3fde26b4bc4d6da76124853ea29d6d81cc864b57e580439beae60eb3beacda18"
+  ],
+  "docs/VALIDATION.md": [
+    "4d2425c09ea47327ba39fd17506a7077d2604663200c952191e0f22b75a4b482"
+  ],
+  "docs/measurements.json": [
+    "d7da57244400625c332aa6d9490cc9ac740f2410a07e44789f912319a30d6373"
+  ],
+  "engine/src/main/java/service/Decompilers.java": [
+    "dbd723d71b888b43fd1bda9a7bee314493a00d2845dc3fa5a937132e12a6e814"
+  ],
+  "engine/src/main/java/service/Engine.java": [
+    "b3c230dadf37208d7cd4aced323ee433009faa6b3d1ac44c70d8162ae03da5bd"
+  ],
+  "engine/src/main/java/service/Json.java": [
+    "053e31d7b9be5fb461d12d91bd6fbf858300e1265f997ebd04ab528d8126c50d"
+  ],
+  "engine/src/main/java/service/Operations.java": [
+    "499daebec6d426624ef846db0b2ed216df7a4adf42567726210a8c8f4a280053"
+  ],
+  "engine/src/main/java/service/ScriptLane.java": [
+    "f7b10c422dcdf805710cb8502955bbd2af5df686283d67eb34109593928e5a9e"
+  ],
+  "engine/src/main/java/service/ServiceJythonScriptProvider.java": [
+    "34ab43e1b7763cc5778323e9907b66d41f04dd616d9bf5df74ca3246c5d3cd76"
+  ],
+  "examples/two_clients.py": [
+    "9738bd9c205a726421973b59df7354ea165d1a2aef07b29659694d45b1385c17"
+  ],
+  "fixtures/generate.py": [
+    "627ce1ded09569e60977d20bda691edf542e6c750849c4f50abf3a95ff8e53e7"
+  ],
+  "fixtures/scripts/Baseline.java": [
+    "aa92ac6a3212e0b3b63da585c24ca674862cbde78fa52d1a475ee84b670519d0"
+  ],
+  "fixtures/scripts/BaselineContext.java": [
+    "d77ae19a5e52902660794ff0cd74d85b23f26ba6d74463b00b4ca061e7961b90"
+  ],
+  "fixtures/scripts/CheckSaved.java": [
+    "ef4cc96ba98bffdf227737f0f0dadd2a7ff422900888875b49c968c1b25f1e82"
+  ],
+  "fixtures/scripts/ContextProbe.java": [
+    "07581ba0c2b10e02e2579bfdcbd844e44aebb8b15b3c93d17122132a2ef1b254"
+  ],
+  "fixtures/scripts/Continuation.java": [
+    "523d4f755a3a4a513a0afe4ab8d85daa3d850184ace4715eb6357570b368a384"
+  ],
+  "fixtures/scripts/Cooperative.java": [
+    "0297f6d565250fc833f858188ca39a51e26061628667c55585d30f63155c2838"
+  ],
+  "fixtures/scripts/DisableAnalysis.java": [
+    "1f413a82527a17b87366b0861b8a75f3aa79ca8c1305c7d80fd5454c56b1702f"
+  ],
+  "fixtures/scripts/ExitEngine.java": [
+    "c8c8cbe078198a88b1dc01750dfdb3a8ea97c520b7e41015d8c28a88c74d7f0a"
+  ],
+  "fixtures/scripts/FailAfterEdit.java": [
+    "331cacbe05e54dc93f1da058bcc2a89a73a87573a6267967e0583fc78adac304"
+  ],
+  "fixtures/scripts/LifecyclePost.java": [
+    "dde0cafa1ede8798d62f062ac9c55edc5ec8e652ee979c2207c3d86f051e2942"
+  ],
+  "fixtures/scripts/NestedPlain.java": [
+    "85f6e8ea0401ecb883e96376d5ccba37e24b8a366faeb4947c32d35bb7a5b432"
+  ],
+  "fixtures/scripts/NestedProbe.java": [
+    "a5f14da4d42e5f19c31d5060ae3e07ecea07ce2cc7e5218e819d6ff6959db1ab"
+  ],
+  "fixtures/scripts/PromptProbe.java": [
+    "d6941d619134101dfba4b70b4b75887d36ac1b1f408aa78d52f267f0f03b24a6"
+  ],
+  "fixtures/scripts/PromptProbe.properties": [
+    "fd0586a3eb043e45123516554db24b130bde0177b67feac458b1078abd4a8005"
+  ],
+  "fixtures/scripts/SlowAnalyzer.java": [
+    "4f66dfd219a0fd8ea378bd3dc2a1f628543f8cb3979b49f0ff6f15f8581a84c0"
+  ],
+  "fixtures/scripts/Uncooperative.java": [
+    "c7e797116cab583994c8c9e2fea3206d1963550e193315fb71a97f4697ec83bf"
+  ],
+  "fixtures/scripts/jython_cancel.py": [
+    "513323e69b1b73a87ce3dd867982d55528a1e65de161627cf8ebf15b8c592495"
+  ],
+  "fixtures/scripts/jython_failure.py": [
+    "be3fbfa86807b323459ed0a4379370240fc74095071ceef5d3ab51a7c3b12b68"
+  ],
+  "fixtures/scripts/jython_probe.py": [
+    "b5ed9b21b0d243aee15d4174f7e6d0a6ae2de0774d4797ea772c0db616c60cd4"
+  ],
+  "fixtures/small.c": [
+    "115cd21fe645c28ba37e910723e23f474c1956c3e7ecf2d133ff144a1966cde0"
+  ],
+  "pytest.ini": [
+    "d8d3addf5b6d34b9a1e9840ed09fdd281822ce00ab5e5cf4359b5bda8b285ace"
+  ],
+  "requirements.lock": [
+    "012f82cda6f9d1634cbdd1d2fdc869419899900daea63f2acfa54ca3f3038af2"
+  ],
+  "requirements.txt": [
+    "4b838478fac50f282284a607d1adcc8878203956ecf1d79b055c0e87410a1840"
+  ],
+  "scripts/deploy.ps1": [
+    "08ac524bdeed162f826b268c231bb855f9c5316547b980aaca908c9374ac3abb"
+  ],
+  "scripts/service.ps1": [
+    "7386f7b48481b770d9883f1080232b30d7b987a18c3545122d8582db3487527d"
+  ],
+  "service/__init__.py": [
+    "65c348bbffe7e41602db6fa234d26719d939aea58ba38846ee7f95922b5376b5"
+  ],
+  "service/client.py": [
+    "3971b8525c563673b3d9e18aba393cbbe089496832b23e2f10233eb16e0627e3"
+  ],
+  "service/config.py": [
+    "a37ebe04b75d8c0e839ca3720af7f2f896f751d2e084daa74923acc1cb4ad294"
+  ],
+  "service/control.py": [
+    "c3bd8928f8e71de43c301a7a5344a64b60f342f0034ce0e7f20fc82e4bdbd135"
+  ],
+  "service/process.py": [
+    "b787db80989178e8eaaf4422850acc9f11f97ce70bacdd56f88d315ca61ecd0e"
+  ],
+  "service/server.py": [
+    "3b909f33b90a4e267ce8f37662d2171ef8cc4f6150dfffc38da5c40c952d725b"
+  ],
+  "service/supervisor.py": [
+    "afb51196b756bab1516bf5d4baf7d9dc42ba66243adf5a570ca3b5a6c0b29354"
+  ],
+  "skills/setup/SKILL.md": [
+    "d5d0b732d33066291f2d39ae173a76ce26cecb1e21c9c030eb6ec8c480c2809e"
+  ],
+  "skills/workflow/SKILL.md": [
+    "3bcfedcc83de581c4b342294922caf0b273c806ad62c7c8a70bf66433fa15ea5"
+  ],
+  "tests/__init__.py": [
+    "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  ],
+  "tests/benchmarks/__init__.py": [
+    "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  ],
+  "tests/benchmarks/compatibility.py": [
+    "a3e75f5d763d4a2c25563d8af49f65ddfd106e9077c8296d0f3e3b6b62632b4d"
+  ],
+  "tests/benchmarks/measure.py": [
+    "6f66a59e4e84f50b281dc82df0f4c3782758273b4da4c90e79736d29d93e4c59"
+  ],
+  "tests/benchmarks/mixed_measure.py": [
+    "407a828af87d608697fa1d766e36835bd164cbb70763790cbfc2c77e49e36dda"
+  ],
+  "tests/build_fixtures.ps1": [
+    "3a4c39a8b9659da2d5bf751bc218490ebbc3b9a22cb2e6e277470030ca17f149"
+  ],
+  "tests/fixtures/generate.py": [
+    "4943949e27b9894eca8b5d5b27ea90b7e0962c91eaec1bc9e27a4386da4ff531"
+  ],
+  "tests/fixtures/scripts/Baseline.java": [
+    "aa92ac6a3212e0b3b63da585c24ca674862cbde78fa52d1a475ee84b670519d0"
+  ],
+  "tests/fixtures/scripts/BaselineContext.java": [
+    "d77ae19a5e52902660794ff0cd74d85b23f26ba6d74463b00b4ca061e7961b90"
+  ],
+  "tests/fixtures/scripts/CheckSaved.java": [
+    "ef4cc96ba98bffdf227737f0f0dadd2a7ff422900888875b49c968c1b25f1e82"
+  ],
+  "tests/fixtures/scripts/ContextProbe.java": [
+    "07581ba0c2b10e02e2579bfdcbd844e44aebb8b15b3c93d17122132a2ef1b254"
+  ],
+  "tests/fixtures/scripts/Continuation.java": [
+    "523d4f755a3a4a513a0afe4ab8d85daa3d850184ace4715eb6357570b368a384"
+  ],
+  "tests/fixtures/scripts/Cooperative.java": [
+    "0297f6d565250fc833f858188ca39a51e26061628667c55585d30f63155c2838"
+  ],
+  "tests/fixtures/scripts/DisableAnalysis.java": [
+    "1f413a82527a17b87366b0861b8a75f3aa79ca8c1305c7d80fd5454c56b1702f"
+  ],
+  "tests/fixtures/scripts/ExitEngine.java": [
+    "c8c8cbe078198a88b1dc01750dfdb3a8ea97c520b7e41015d8c28a88c74d7f0a"
+  ],
+  "tests/fixtures/scripts/FailAfterEdit.java": [
+    "331cacbe05e54dc93f1da058bcc2a89a73a87573a6267967e0583fc78adac304"
+  ],
+  "tests/fixtures/scripts/LifecyclePost.java": [
+    "dde0cafa1ede8798d62f062ac9c55edc5ec8e652ee979c2207c3d86f051e2942"
+  ],
+  "tests/fixtures/scripts/NestedPlain.java": [
+    "85f6e8ea0401ecb883e96376d5ccba37e24b8a366faeb4947c32d35bb7a5b432"
+  ],
+  "tests/fixtures/scripts/NestedProbe.java": [
+    "a5f14da4d42e5f19c31d5060ae3e07ecea07ce2cc7e5218e819d6ff6959db1ab"
+  ],
+  "tests/fixtures/scripts/PromptProbe.java": [
+    "d6941d619134101dfba4b70b4b75887d36ac1b1f408aa78d52f267f0f03b24a6"
+  ],
+  "tests/fixtures/scripts/PromptProbe.properties": [
+    "fd0586a3eb043e45123516554db24b130bde0177b67feac458b1078abd4a8005"
+  ],
+  "tests/fixtures/scripts/SlowAnalyzer.java": [
+    "4f66dfd219a0fd8ea378bd3dc2a1f628543f8cb3979b49f0ff6f15f8581a84c0"
+  ],
+  "tests/fixtures/scripts/Uncooperative.java": [
+    "c7e797116cab583994c8c9e2fea3206d1963550e193315fb71a97f4697ec83bf"
+  ],
+  "tests/fixtures/scripts/jython_cancel.py": [
+    "513323e69b1b73a87ce3dd867982d55528a1e65de161627cf8ebf15b8c592495"
+  ],
+  "tests/fixtures/scripts/jython_failure.py": [
+    "be3fbfa86807b323459ed0a4379370240fc74095071ceef5d3ab51a7c3b12b68"
+  ],
+  "tests/fixtures/scripts/jython_probe.py": [
+    "b5ed9b21b0d243aee15d4174f7e6d0a6ae2de0774d4797ea772c0db616c60cd4"
+  ],
+  "tests/fixtures/small.c": [
+    "115cd21fe645c28ba37e910723e23f474c1956c3e7ecf2d133ff144a1966cde0"
+  ],
+  "tests/prepare.py": [
+    "08b87805ecc36f2c0e1a868c3b7af45fb219bd7f7cf24daf78d855538eadc481"
+  ],
+  "tests/smoke.py": [
+    "a441f34756624e10df67755f10b8b02f5b52133eade5b16426d7eedff3962902"
+  ],
+  "tests/test_live.py": [
+    "6ea40703ec4ec90a4edf3e0719ae452381b44865256a74bb62c3f3fd2b82350e",
+    "9a642eb53e85cb69f04455a91a2786759e54252f1fa34d73663d931fda106075"
+  ],
+  "tests/test_plugin.py": [
+    "27d7b62f6483b15fbca9ebccde710e3b10e2e0a6d22bed14637613cdebffb4d6"
+  ],
+  "tests/test_supervisor.py": [
+    "6871dd0afde91f64f47f79945f378d5b58a16a7150623adcad338ad8ec005085"
+  ],
+  "toolchain.json": [
+    "18cc14ee13f43d3581afcd9373f1f1803e1bd4bdfadefca829d43a3501a246f6"
+  ],
+  "tools/build.ps1": [
+    "74cd72db15700752a31854d841e5c95fe4fc21d1b944a004686d3946c54e413d",
+    "8896a946233891c0d576da5ee779fa9197bd9f017e989c0d61ec9634609078ec"
+  ],
+  "tools/compatibility.py": [
+    "5a2d951bbf3d3596794e7ea69f23ebd4b79d13f90f01dd93826d855724df3886"
+  ],
+  "tools/fixtures.ps1": [
+    "0d5944cb9d64d6ef058cf935a38b76884ae3e7d4af9f024ec3b5f9c6c4c9a5fc"
+  ],
+  "tools/install.ps1": [
+    "ade98afb93f3c0ec5e70e8342cd0badaa3b4e1954c3cfed6f85c15d07d290df2"
+  ],
+  "tools/measure.py": [
+    "a88fcb6cac0d2c532c8fc6ab17cc61a0ac02695b1a5d06dcb8f0fcbab72c6e4e"
+  ],
+  "tools/mixed_measure.py": [
+    "faab788f4aad9aa6c4e869114bca60a965dd16779fdaac3673af060b3c97c730"
+  ],
+  "tools/package.ps1": [
+    "2cfbfaf9564a266e1e5fae8dabc2cc14d771114c32cdfb7fd6dab32cac5fc97e",
+    "3136d5132069ec83a2b88aa84077e833e4766f2ed14b9665df5d4eccb7661fef"
+  ],
+  "tools/prepare_validation.py": [
+    "08b87805ecc36f2c0e1a868c3b7af45fb219bd7f7cf24daf78d855538eadc481"
+  ],
+  "tools/recorded_job.py": [
+    "29cee896b3c438fb85370b72f0e66bf8ec313ef8b1f523499f8a28ecddc5da88"
+  ],
+  "tools/service.ps1": [
+    "59141e4b6f0ad3a8291bec0454fe12d73f42ed7f07d8394e2bd8a2bab26816c0"
+  ],
+  "tools/validate.ps1": [
+    "2aa7d471b34f673c560d08ac379cec335f40c812e2b2d6427b5933dd915b9def",
+    "a5f884b4548527df8ec34953af8551a1fa788d8ad2182966de14ae3889ced9a3"
+  ],
+  "tools/verify_package.py": [
+    "747f87d9b21fa364c789cd411860cc8f08f37e0d40edbdd48d7d34d349c52b7e"
+  ]
+}

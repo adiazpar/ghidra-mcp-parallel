@@ -35,19 +35,29 @@ The private directory contains:
 ```text
 ghidra-shared/
   VERSION                  installed product version
+  LICENSE                  runtime license
+  bridge_mcp_ghidra.py      stdio transport adapter
+  service/                 Python service runtime
+  tools/
+    service.ps1            runtime start/status/stop command
+    recorded_job.py        recorded jobs for consumer wrappers
   .venv/                   service-owned Python environment
   .local/
     ghidra_12.1.3_PUBLIC/   dedicated Ghidra distribution
     config.json            endpoint, resource limits and private token
-    software.json          installed software version/provenance
+    software.json          installed version and managed-file inventory
     runtime/               logs, bounded journal, owner state and caches
   runtime/
     projects/              persistent Ghidra project databases
     inputs/                staged binary inputs
     scripts/               immutable per-job script snapshots
-  service/, engine/, tools/, scripts/, skills/, docs/
-                            installed software and operating instructions
 ```
+
+The compiled engine is installed inside the dedicated Ghidra distribution.
+Java source, build/deployment tools, agent skills, documentation and plugin
+manifests stay in the source/plugin package. They are not copied into the private
+installation. Commands above run from that package; consumer wrappers can use the
+two stable runtime commands under `tools/` without depending on a plugin cache.
 
 Install the same version for both clients:
 
@@ -87,6 +97,13 @@ update the plugin, run its `scripts/deploy.ps1 -Update`, then restart and verify
 targets. The updater replaces software only, preserves configuration and
 databases, and refuses to update while the supervisor holds its lock. Plugin
 update alone does not silently upgrade or restart the running service.
+
+The installer holds the ownership lock during deployment, builds the engine from
+plugin source into a temporary build directory, and removes that directory after
+installation. Runtime files are inventoried in `.local/software.json`. Updates
+retire unchanged managed files from older versions, including the broad 1.0.0 and
+1.0.1 deployments. Modified or unrecognized files are preserved and reported;
+configuration, journals, scripts and databases are outside the software cleanup.
 
 `VERSION`, both manifests and CHANGELOG use semantic versioning. Increment the
 version for distributed changes; keep both clients and the installed service

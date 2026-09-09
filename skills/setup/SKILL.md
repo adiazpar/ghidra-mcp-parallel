@@ -10,6 +10,11 @@ packages both agent manifests, shared skills, MCP configuration and service sour
 One separate private installation owns Ghidra, its Python environment, credentials,
 databases, inputs and logs. Never store these in an agent plugin cache.
 
+The private installation contains only runtime software and data. Agent skills,
+documentation, Java source and build/deployment tools stay in this plugin. Run
+`scripts/deploy.ps1` and `scripts/service.ps1` from the plugin directory. The private
+runtime keeps `tools/service.ps1` and `tools/recorded_job.py` for consumer wrappers.
+
 Run the plugin's `scripts/deploy.ps1` for a new Windows installation, default
 `~/ghidra-shared`. It requires uv, Python bootstrap and JDK 21.0.11, creates its
 own pinned environment and builds the engine. Do not modify another project's
@@ -21,6 +26,8 @@ For updates, coordinate idle clients, save wanted changes, stop the service,
 run `scripts/deploy.ps1 -Update`, restart and verify loaded targets. Plugin
 updates do not silently replace the engine or mutate a database. Use the same
 product version for service and client plugins; VERSION and manifests are checked.
+The updater tracks managed runtime files and retires unchanged legacy software;
+inspect any reported modified files it preserves. It never prunes private data.
 
 Never run `tools/validate.ps1` or fixture preparation against production data.
 Synthetic validation uses the source checkout's separate development installation.

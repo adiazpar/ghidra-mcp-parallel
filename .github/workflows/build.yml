@@ -27,6 +27,9 @@ jobs:
         run: ./tools/install.ps1
       - name: Check distribution and supervisor contracts
         run: .venv/Scripts/python.exe -m pytest tests/test_plugin.py tests/test_supervisor.py -q
+      - name: Test fresh runtime deployment and update
+        shell: powershell
+        run: ./tests/install_smoke.ps1 -Root "$env:RUNNER_TEMP/shared-ghidra-runtime"
       - name: Build product archive
         shell: powershell
         run: ./tools/package.ps1

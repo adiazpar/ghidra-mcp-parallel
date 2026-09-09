@@ -14,16 +14,8 @@ if(Test-Path -LiteralPath $destination){
     }
 }
 New-Item -ItemType Directory -Force -Path $destination | Out-Null
-# Explicit software allowlist. Never copy source caches, credentials or projects.
-foreach($folder in @('service','engine','tools','docs','scripts','skills')){
-    Copy-Item -LiteralPath (Join-Path $source $folder) -Destination $destination -Recurse -Force -Exclude '__pycache__','*.pyc','*.class'
-}
-foreach($file in @('VERSION','LICENSE','README.md','requirements.txt','requirements.lock','toolchain.json','bridge_mcp_ghidra.py')){
-    Copy-Item -LiteralPath (Join-Path $source $file) -Destination $destination -Force
-}
-& "$destination/tools/install.ps1" -Port $Port -Workers 4
+# Build from plugin source; install only the runtime payload at the destination.
+& "$source/tools/install.ps1" -Root $destination -RuntimeOnly -Port $Port -Workers 4
 if($LASTEXITCODE){throw 'Service installation failed.'}
 $version=(Get-Content "$source/VERSION" -Raw).Trim()
-@{version=$version;source='https://github.com/adiazpar/ghidra-mcp-parallel';installedAt=[DateTime]::UtcNow.ToString('o')} |
-    ConvertTo-Json | Set-Content -Encoding ascii "$destination/.local/software.json"
 Write-Output "Shared Ghidra $version installed at $destination. Start with scripts/service.ps1 start."

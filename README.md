@@ -1,6 +1,6 @@
 # Shared Ghidra service
 
-Version **1.0.1**. One persistent headless Ghidra service, packaged as a plugin
+Version **1.0.2**. One persistent headless Ghidra service, packaged as a plugin
 for both Codex and Claude Code. All clients share loaded programs and revisions
 through one authenticated MCP endpoint. Reads run concurrently; edits, scripts,
 analysis and lifecycle operations are coordinated.
@@ -19,6 +19,8 @@ The dedicated installation defaults to `~/ghidra-shared`. It owns Ghidra, its
 Python environment, private configuration and analyzed databases. Consumer
 repositories own their target maps, scripts, findings and evidence. Each client
 runs a lightweight forwarding adapter; it does not start another Ghidra engine.
+Only runtime software is deployed there. Skills, documentation, Java source and
+installation tools remain in this repository and the installed plugin package.
 
 See [installation and updates](docs/INSTALLATION.md) for prerequisites, plugin
 registration in both clients, configuration and shutdown. Use the

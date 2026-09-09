@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.0.2 - 2026-09-09
+
+- Install only runtime software in the private service directory.
+- Keep agent instructions, documentation, source and installation tools in the plugin.
+- Track managed runtime files and retire unchanged legacy software during updates.
+- Hold the service ownership lock during installation and validate fresh deployments in CI.
+
 ## 1.0.1 - 2026-09-08
 
 - Remove the retired GUI implementation, Maven build and obsolete planning documents.

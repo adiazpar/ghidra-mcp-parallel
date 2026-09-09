@@ -1,15 +1,16 @@
-param([ValidateRange(1024,65535)][int]$Port=18765,[ValidateRange(1,4)][int]$Workers=4,[switch]$Comparison)
+param([ValidateRange(1024,65535)][int]$Port=18765,[ValidateRange(1,4)][int]$Workers=4,
+      [switch]$Comparison,[string]$Root,[switch]$RuntimeOnly)
 $ErrorActionPreference='Stop'
-$root=Split-Path $PSScriptRoot -Parent
-if(Test-Path "$root/.local/runtime/supervisor.lock") {
-    $lockStream=[IO.File]::Open("$root/.local/runtime/supervisor.lock",[IO.FileMode]::Open,[IO.FileAccess]::ReadWrite,[IO.FileShare]::ReadWrite)
-    try { $lockStream.Lock(0,1); $lockStream.Unlock(0,1) }
-    catch { throw 'Stop the local service before installing or updating its engine' }
-    finally { $lockStream.Dispose() }
-}
-$pin=Get-Content "$root/toolchain.json" -Raw | ConvertFrom-Json
+$source=Split-Path $PSScriptRoot -Parent
+$root=if($Root){[IO.Path]::GetFullPath($Root)}else{$source}
+if($RuntimeOnly -and ($root.TrimEnd('\') -eq $source.TrimEnd('\') -or $source.StartsWith($root.TrimEnd('\')+'\',[StringComparison]::OrdinalIgnoreCase))){throw 'The runtime must be separate from plugin source.'}
+$pin=Get-Content "$source/toolchain.json" -Raw | ConvertFrom-Json
 if($Port -eq 8080){throw 'Port 8080 is reserved for the existing setup'}
 New-Item -ItemType Directory -Force "$root/.local/downloads","$root/.local/runtime" | Out-Null
+$lockStream=[IO.File]::Open("$root/.local/runtime/supervisor.lock",[IO.FileMode]::OpenOrCreate,[IO.FileAccess]::ReadWrite,[IO.FileShare]::ReadWrite)
+try {
+    try { $lockStream.Lock(0,1) }
+    catch { throw 'Stop the local service before installing or updating its engine' }
 $archive="$root/.local/downloads/ghidra.zip"
 if(!(Test-Path "$root/.local/ghidra_12.1.3_PUBLIC")) {
     if(!(Test-Path $archive)){ & curl.exe -L --fail --output $archive $pin.ghidra_url; if($LASTEXITCODE){throw 'Download failed'} }
@@ -30,7 +31,7 @@ if($Comparison) {
 $env:UV_CACHE_DIR="$root/.local/uv-cache"
 $env:UV_PYTHON_INSTALL_DIR="$root/.local/python"
 if(!(Test-Path "$root/.venv")){ & uv venv "$root/.venv" --python 3.12.9; if($LASTEXITCODE){throw 'venv failed'} }
-& uv pip sync --python "$root/.venv/Scripts/python.exe" "$root/requirements.lock"
+& uv pip sync --python "$root/.venv/Scripts/python.exe" "$source/requirements.lock"
 if($LASTEXITCODE){throw 'Dependency installation failed'}
 & "$root/.venv/Scripts/python.exe" -c "import zipfile; from pathlib import Path; g=Path(r'$root/.local/ghidra_12.1.3_PUBLIC'); zipfile.ZipFile(next((g/'Extensions/Ghidra').glob('*Jython.zip'))).extractall(g/'Ghidra/Extensions')"
 if($LASTEXITCODE){throw 'Bundled Jython extension installation failed'}
@@ -41,10 +42,18 @@ if(!(Test-Path "$root/.local/config.json")) {
     & icacls.exe "$root/.local/config.json" /inheritance:r /grant:r "$($env:USERNAME):(F)" | Out-Null
     if($LASTEXITCODE){throw 'Unable to restrict config permissions'}
 }
-& "$PSScriptRoot/build.ps1"
+$buildOutput=if($RuntimeOnly){Join-Path $root '.local/install-build'}else{Join-Path $root 'target'}
+& "$PSScriptRoot/build.ps1" -GhidraHome "$root/.local/ghidra_12.1.3_PUBLIC" -OutputDirectory $buildOutput
 $extension="$root/.local/ghidra_12.1.3_PUBLIC/Ghidra/Extensions/SharedService"
 New-Item -ItemType Directory -Force "$extension/lib" | Out-Null
-Copy-Item -LiteralPath "$root/target/shared-service.jar" -Destination "$extension/lib/shared-service.jar"
+Copy-Item -LiteralPath "$buildOutput/shared-service.jar" -Destination "$extension/lib/shared-service.jar"
 'MODULE FILE LICENSE: lib/shared-service.jar Apache License 2.0' | Set-Content -Encoding ascii "$extension/Module.manifest"
 @('name=SharedService','description=Persistent shared program engine','author=','createdOn=2026-09-08','version=12.1.3') | Set-Content -Encoding ascii "$extension/extension.properties"
-Write-Output 'Isolated service installed. Run tools/service.ps1 start.'
+if($RuntimeOnly) {
+    & "$root/.venv/Scripts/python.exe" "$PSScriptRoot/runtime_payload.py" $root
+    if($LASTEXITCODE){throw 'Runtime deployment failed'}
+    Write-Output 'Private runtime installed. Start it with the plugin scripts/service.ps1 command.'
+} else {
+    Write-Output 'Isolated development service installed. Run tools/service.ps1 start.'
+}
+} finally { $lockStream.Dispose() }

@@ -92,6 +92,9 @@ The tests are grouped by purpose: `test_live.py` exercises the running service;
 Java/Jython inputs live in `tests/fixtures/`, their build command is
 `tests/build_fixtures.ps1`, and `tests.prepare` imports disposable targets.
 `tests/benchmarks/` contains throughput, mixed-workload and compatibility runners.
+`tests/install_smoke.ps1 -Root <new-disposable-directory>` checks a fresh private
+runtime, repeated updates, configuration preservation and MCP startup. It downloads
+its own dependencies and runs in hosted CI; never point it at an existing installation.
 
 Start the isolated service first. Validation refuses to replace a project other
 than the disposable `validation` / `validation_*` projects. Rebuilt fixture hashes
