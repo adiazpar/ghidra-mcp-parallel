@@ -287,6 +287,13 @@ class Supervisor:
                     self.lock.wait(.1)
                     continue
                 self.pending.popleft()
+                # The watchdog may not have observed a deadline reached in the queue.
+                if time.perf_counter()-j['submitted_mono'] >= j['timeout']:
+                    j.update(status='timed_out', timeout_requested=True, finished=time.time())
+                    self.persist(j)
+                    self.prune()
+                    self.lock.notify_all()
+                    continue
                 self.active.add(jid)
                 j.update(status='running', started=time.time(), queue_ms=(time.perf_counter()-j['submitted_mono'])*1000,
                          generation=self.generation)
